@@ -28,7 +28,7 @@ module.exports = (app, passport) => {
 
   // 後台首頁
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
-  // 後台 餐廳 
+  // 後台 restaurant list
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
   // 後台 (CRUD)
   app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant)
@@ -37,6 +37,10 @@ module.exports = (app, passport) => {
   app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
   app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
   app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
+  // 後台 users list
+  app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
+  // 後台 user toggle role
+  app.put('/admin/users/:id', authenticatedAdmin, adminController.toggleAdmin)
 
   // 註冊
   app.get('/signup', userController.signUpPage)

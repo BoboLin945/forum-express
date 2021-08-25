@@ -1,5 +1,6 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
+const User = db.User
 
 const fs = require('fs')
 const imgur = require('imgur-node-api')
@@ -125,6 +126,41 @@ const adminController = {
             res.redirect('/admin/restaurants')
           })
       })
+  },
+  // 取得使用者列表
+  getUsers: (req, res) => {
+    User.findAll({ raw: true })
+      .then((users) => {
+        res.render('admin/users', { users })
+      })
+      .catch(error => console.log(error))
+  },
+  // 使用者角色權限切換
+  toggleAdmin: (req, res) => {
+    const id = req.params.id
+    User.findByPk(id)
+      .then((user) => {
+        if (user.isAdmin === true) {
+          user.update({
+            isAdmin: false
+          })
+            .then((user) => {
+              req.flash('success_messages', '已設定為 user')
+              res.redirect('/admin/users')
+            })
+            .catch(error => console.log(error))
+        } else if (user.isAdmin === false) {
+          user.update({
+            isAdmin: true
+          })
+            .then((user) => {
+              req.flash('success_messages', '已設定為 admin')
+              res.redirect('/admin/users')
+            })
+            .catch(error => console.log(error))
+        }
+      })
+      .catch(err => console.log(err))
   }
 }
 
