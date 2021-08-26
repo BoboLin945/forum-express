@@ -31,11 +31,11 @@
       <td>{{this.email}}</td>
       <td>{{#if this.isAdmin}} admin {{else}} user {{/if}}</td>
       <td>{{#if this.isAdmin}}
-        <form action="/admin/users/{{this.id}}?_method=PUT" method="POST" style="display: inline;">
+        <form action="/admin/users/{{this.id}}/toggleAdmin?_method=PUT" method="POST" style="display: inline;">
           <button type="submit" class="btn btn-link">set as user</button>
         </form>
         {{else}}
-        <form action="/admin/users/{{this.id}}?_method=PUT" method="POST" style="display: inline;">
+        <form action="/admin/users/{{this.id}}/toggleAdmin?_method=PUT" method="POST" style="display: inline;">
           <button type="submit" class="btn btn-link">set as admin</button>
         </form>
         {{/if}}

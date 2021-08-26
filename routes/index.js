@@ -40,7 +40,7 @@ module.exports = (app, passport) => {
   // 後台 users list
   app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
   // 後台 user toggle role
-  app.put('/admin/users/:id', authenticatedAdmin, adminController.toggleAdmin)
+  app.put('/admin/users/:id/toggleAdmin', authenticatedAdmin, adminController.toggleAdmin)
 
   // 註冊
   app.get('/signup', userController.signUpPage)
