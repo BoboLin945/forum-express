@@ -140,25 +140,20 @@ const adminController = {
     const id = req.params.id
     User.findByPk(id)
       .then((user) => {
-        if (user.isAdmin === true) {
-          user.update({
-            isAdmin: false
+        const isAdmin = user.isAdmin ? false : true
+        console.log(isAdmin)
+        user.update({
+          isAdmin
+        })
+          .then((user) => {
+            let msg = ''
+            if (user.isAdmin) {
+              msg += '權限已設定為 Admin'
+            } else { msg += '權限已設定為 User' }
+            req.flash('success_messages', msg)
+            res.redirect('/admin/users')
           })
-            .then((user) => {
-              req.flash('success_messages', '已設定為 user')
-              res.redirect('/admin/users')
-            })
-            .catch(error => console.log(error))
-        } else if (user.isAdmin === false) {
-          user.update({
-            isAdmin: true
-          })
-            .then((user) => {
-              req.flash('success_messages', '已設定為 admin')
-              res.redirect('/admin/users')
-            })
-            .catch(error => console.log(error))
-        }
+          .catch(error => console.log(error))
       })
       .catch(err => console.log(err))
   }
