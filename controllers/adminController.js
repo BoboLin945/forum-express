@@ -1,6 +1,7 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
 const User = db.User
+const Category = db.Category
 
 const fs = require('fs')
 const imgur = require('imgur-node-api')
@@ -9,7 +10,11 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const adminController = {
   // 取得餐廳列表
   getRestaurants: (req, res) => {
-    return Restaurant.findAll({ raw: true }).then(restaurants => {
+    return Restaurant.findAll({
+      raw: true,
+      nest: true,
+      include: [Category]
+    }).then(restaurants => {
       return res.render('admin/restaurants', { restaurants })
     })
   },
@@ -59,8 +64,10 @@ const adminController = {
   // R - 瀏覽餐廳
   getRestaurant: (req, res) => {
     const id = req.params.id
-    return Restaurant.findByPk(id, { raw: true }).then(restaurant => {
-      return res.render('admin/restaurant', { restaurant })
+    return Restaurant.findByPk(id, {
+      include: [Category]
+    }).then(restaurant => {
+      return res.render('admin/restaurant', { restaurant: restaurant.toJSON() })
     })
   },
   // 編輯餐廳表單
