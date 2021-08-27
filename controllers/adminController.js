@@ -20,11 +20,14 @@ const adminController = {
   },
   // 新增餐廳表單
   createRestaurant: (req, res) => {
-    return res.render('admin/create')
+    Category.findAll({ raw: true, nest: true })
+      .then(categories => {
+        return res.render('admin/create', { categories })
+      })
   },
   // C - 新增餐廳
   postRestaurant: (req, res) => {
-    const { name, tel, address, opening_hours, description } = req.body
+    const { name, tel, address, opening_hours, description, categoryId } = req.body
     if (!name) {
       req.flash('error_messages', "name didn't exist")
       return res.redirect('back')
@@ -40,7 +43,8 @@ const adminController = {
           address,
           opening_hours,
           description,
-          image: file ? img.data.link : null
+          image: file ? img.data.link : null,
+          CategoryId: categoryId
         }).then((restaurant) => {
           req.flash('success_messages', 'restaurant was successfully created')
           return res.redirect('/admin/restaurants')
@@ -54,7 +58,8 @@ const adminController = {
         address,
         opening_hours,
         description,
-        image: null
+        image: null,
+        CategoryId: categoryId
       }).then((restaurant) => {
         req.flash('success_messages', 'restaurant was successfully created')
         return res.redirect('/admin/restaurants')
@@ -73,13 +78,16 @@ const adminController = {
   // 編輯餐廳表單
   editRestaurant: (req, res) => {
     const id = req.params.id
-    return Restaurant.findByPk(id, { raw: true }).then(restaurant => {
-      return res.render('admin/create', { restaurant })
-    })
+    Category.findAll({ raw: true, nest: true })
+      .then(categories => {
+        return Restaurant.findByPk(id).then(restaurant => {
+          return res.render('admin/create', { restaurant: restaurant.toJSON(), categories })
+        })
+      })
   },
   // U - 編輯餐廳
   putRestaurant: (req, res) => {
-    const { name, tel, address, opening_hours, description } = req.body
+    const { name, tel, address, opening_hours, description, categoryId } = req.body
     const id = req.params.id
     if (!name) {
       req.flash('error_messages', "name didn't exist")
@@ -98,7 +106,8 @@ const adminController = {
               address,
               opening_hours,
               description,
-              image: file ? img.data.link : restaurant.image
+              image: file ? img.data.link : restaurant.image,
+              CategoryId: categoryId
             }).then((restaurant) => {
               req.flash('success_messages', 'restaurant was successfully to update')
               res.redirect('/admin/restaurants')
@@ -115,7 +124,8 @@ const adminController = {
             address,
             opening_hours,
             description,
-            image: restaurant.image
+            image: restaurant.image,
+            CategoryId: categoryId
           }).then((restaurant) => {
             req.flash('success_messages', 'restaurant was successfully to update')
             res.redirect('/admin/restaurants')
