@@ -1,6 +1,7 @@
 const restController = require('../controllers/restController.js')
 const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController.js')
+const categoryController = require('../controllers/categoryController')
 
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
@@ -41,6 +42,8 @@ module.exports = (app, passport) => {
   app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
   // 後台 user toggle role
   app.put('/admin/users/:id/toggleAdmin', authenticatedAdmin, adminController.toggleAdmin)
+  // 後台 分類 CRUD
+  app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
 
   // 註冊
   app.get('/signup', userController.signUpPage)
