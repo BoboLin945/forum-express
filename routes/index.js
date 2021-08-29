@@ -24,8 +24,12 @@ module.exports = (app, passport) => {
     res.redirect('/signin')
   }
 
+  // 首頁
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
+  // 前台餐廳列表
   app.get('/restaurants', authenticated, restController.getRestaurants)
+  // 單一餐廳
+  app.get('/restaurants/:id', authenticated, restController.getRestaurant)
 
   // 後台首頁
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
