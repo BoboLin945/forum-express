@@ -45,6 +45,8 @@ module.exports = (app, passport) => {
   // 後台 分類 CRUD
   app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
   app.post('/admin/categories', authenticatedAdmin, categoryController.postCategory)
+  app.get('/admin/categories/:id', authenticatedAdmin, categoryController.getCategories)
+  app.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory)
 
   // 註冊
   app.get('/signup', userController.signUpPage)
