@@ -33,6 +33,8 @@ module.exports = (app, passport) => {
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
   // 新增評論
   app.post('/comments', authenticated, commentController.postComment)
+  // 刪除評論
+  app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
 
   // 後台首頁
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
