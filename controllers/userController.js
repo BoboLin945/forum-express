@@ -69,7 +69,7 @@ const userController = {
   },
   // edit profile page
   editUser: (req, res) => {
-    const id = helper.getUser(req).id
+    const id = req.params.id
     User.findByPk(id)
       .then((user) => {
         const userProfile = user.toJSON()
@@ -81,6 +81,11 @@ const userController = {
   putUser: (req, res) => {
     const { name } = req.body
     const id = req.params.id
+  
+    if(Number(id) !== helper.getUser(req).id) {
+      req.flash('error_messages', "cannot edit other user's profile")
+      return res.redirect('back')
+    }
 
     if (!name) {
       req.flash('error_messages', "name didn't exist")
