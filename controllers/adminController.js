@@ -158,7 +158,6 @@ const adminController = {
     User.findByPk(id)
       .then((user) => {
         const isAdmin = user.isAdmin ? false : true
-        console.log(isAdmin)
         user.update({
           isAdmin
         })

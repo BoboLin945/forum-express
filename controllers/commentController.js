@@ -1,10 +1,12 @@
 const db = require('../models')
 const Comment = db.Comment
 
+const helpers = require('../_helpers')
+
 const commentController = {
   // 新增評論
   postComment: (req, res) => {
-    const UserId = req.user.id
+    const UserId = helpers.getUser(req).id
     const { text, restaurantId } = req.body
     Comment.create({
       text,

@@ -2,6 +2,12 @@ const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
 
+const helper = require('../_helpers')
+
+const fs = require('fs')
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+
 const userController = {
   // 註冊表單
   signUpPage: (req, res) => {
@@ -47,7 +53,68 @@ const userController = {
     req.flash('success_messages', '登出成功！')
     req.logout()
     res.redirect('/signin')
-  }
+  },
+
+  // profile
+  // 取得 profile page
+  getUser: (req, res) => {
+    const id = req.params.id
+    const loginUserId = helper.getUser(req).id
+    User.findByPk(id)
+      .then((user) => {
+        const userProfile = user.toJSON()
+        res.render('user', { userProfile, loginUserId })
+      })
+      .catch(err => console.log(err))
+  },
+  // edit profile page
+  editUser: (req, res) => {
+    const id = helper.getUser(req).id
+    User.findByPk(id)
+      .then((user) => {
+        const userProfile = user.toJSON()
+        res.render('userEdit', { userProfile })
+      })
+      .catch(err => console.log(err))
+  },
+  // edit profile
+  putUser: (req, res) => {
+    const { name } = req.body
+    const id = req.params.id
+
+    if (!name) {
+      req.flash('error_messages', "name didn't exist")
+      return res.redirect('back')
+    }
+
+    const { file } = req
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.upload(file.path, (err, img) => {
+        return User.findByPk(id)
+          .then((user) => {
+            user.update({
+              name,
+              image: file ? img.data.link : restaurant.image,
+            }).then((user) => {
+              req.flash('success_messages', 'user was successfully to update')
+              res.redirect(`/users/${id}`)
+            })
+          })
+      })
+    } else {
+      return User.findByPk(id)
+        .then((user) => {
+          user.update({
+            name,
+            image: user.image,
+          }).then((user) => {
+            req.flash('success_messages', 'user was successfully to update')
+            res.redirect(`/users/${id}`)
+          })
+        })
+    }
+  },
 }
 
 module.exports = userController
