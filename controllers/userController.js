@@ -1,11 +1,15 @@
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
+const Restaurant = db.Restaurant
+const Comment = db.Comment
 
 const helper = require('../_helpers')
 
 const fs = require('fs')
 const imgur = require('imgur-node-api')
+const { resolve } = require('path')
+const { rejects } = require('assert')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const userController = {
@@ -60,12 +64,36 @@ const userController = {
   getUser: (req, res) => {
     const id = req.params.id
     const loginUserId = helper.getUser(req).id
-    User.findByPk(id)
-      .then((user) => {
-        const userProfile = user.toJSON()
-        res.render('user', { userProfile, loginUserId })
+    // 找到有此 user 的評論
+    Comment.findAndCountAll({
+      include: Restaurant,
+      where: { UserId: id }
+    })
+      .then((result) => {
+        const commentNum = result.count
+        let query = []
+        new Promise((resolve, reject) => {
+          const data = result.rows.map(r => ({
+            ...r.dataValues
+          }))
+          for (let i = 0; i < data.length; i++) { query.push(data[i].RestaurantId) }
+          resolve(query)
+        }).then((query) => {
+          Restaurant.findAll({
+            raw: true,
+            nest: true,
+            where: { id: query }
+          })
+            .then((restaurants) => {
+              User.findByPk(id)
+                .then((user) => {
+                  const userProfile = user.toJSON()
+                  res.render('user', { userProfile, loginUserId, commentNum, restaurants })
+                })
+                .catch(err => console.log(err))
+            })
+        })
       })
-      .catch(err => console.log(err))
   },
   // edit profile page
   editUser: (req, res) => {
@@ -81,8 +109,8 @@ const userController = {
   putUser: (req, res) => {
     const { name } = req.body
     const id = req.params.id
-  
-    if(Number(id) !== helper.getUser(req).id) {
+
+    if (Number(id) !== helper.getUser(req).id) {
       req.flash('error_messages', "cannot edit other user's profile")
       return res.redirect('back')
     }
