@@ -33,6 +33,8 @@ module.exports = (app, passport) => {
   app.get('/restaurants/feeds', authenticated, restController.getFeeds)
   // 單一餐廳
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+  // 單一餐廳 Dashboard
+  app.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
   // 新增評論
   app.post('/comments', authenticated, commentController.postComment)
   // 刪除評論
