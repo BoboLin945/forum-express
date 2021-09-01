@@ -3,6 +3,7 @@ const db = require('../models')
 const User = db.User
 const Restaurant = db.Restaurant
 const Comment = db.Comment
+const Favorite = db.Favorite
 
 const helper = require('../_helpers')
 
@@ -10,6 +11,7 @@ const fs = require('fs')
 const imgur = require('imgur-node-api')
 const { resolve } = require('path')
 const { rejects } = require('assert')
+const restaurant = require('../models/restaurant')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const userController = {
@@ -58,7 +60,6 @@ const userController = {
     req.logout()
     res.redirect('/signin')
   },
-
   // profile
   // 取得 profile page
   getUser: (req, res) => {
@@ -148,6 +149,29 @@ const userController = {
         })
     }
   },
+  // 新增餐廳至最愛
+  addFavorite: (req, res) => {
+    const UserId = req.user.id
+    const RestaurantId = req.params.restaurantId
+    Favorite.create({
+      UserId,
+      RestaurantId
+    }).then((favorite) => {
+      return res.redirect('back')
+    })
+  },
+  // 移除最愛
+  removeFavorite: (req, res) => {
+    const UserId = req.user.id
+    const RestaurantId = req.params.restaurantId
+    Favorite.findOne({
+      where: { UserId, RestaurantId }
+    }).then((favorite) => {
+      favorite.destroy()
+    }).then((restaurant) => {
+      res.redirect('back')
+    })
+  }
 }
 
 module.exports = userController

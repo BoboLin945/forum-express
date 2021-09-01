@@ -35,6 +35,9 @@ module.exports = (app, passport) => {
   app.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
   // 單一餐廳
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+  // 我的最愛
+  app.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
+  app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
   // 新增評論
   app.post('/comments', authenticated, commentController.postComment)
   // 刪除評論
