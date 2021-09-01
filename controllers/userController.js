@@ -5,7 +5,7 @@ const Restaurant = db.Restaurant
 const Comment = db.Comment
 const Favorite = db.Favorite
 
-const helper = require('../_helpers')
+const helpers = require('../_helpers')
 
 const fs = require('fs')
 const imgur = require('imgur-node-api')
@@ -64,7 +64,7 @@ const userController = {
   // 取得 profile page
   getUser: (req, res) => {
     const id = req.params.id
-    const loginUserId = helper.getUser(req).id
+    const loginUserId = helpers.getUser(req).id
     // 找到有此 user 的評論
     Comment.findAndCountAll({
       include: Restaurant,
@@ -111,7 +111,7 @@ const userController = {
     const { name } = req.body
     const id = req.params.id
 
-    if (Number(id) !== helper.getUser(req).id) {
+    if (Number(id) !== helpers.getUser(req).id) {
       req.flash('error_messages', "cannot edit other user's profile")
       return res.redirect('back')
     }
@@ -151,7 +151,7 @@ const userController = {
   },
   // 新增餐廳至最愛
   addFavorite: (req, res) => {
-    const UserId = req.user.id
+    const UserId = helpers.getUser(req).id
     const RestaurantId = req.params.restaurantId
     Favorite.create({
       UserId,
@@ -162,7 +162,7 @@ const userController = {
   },
   // 移除最愛
   removeFavorite: (req, res) => {
-    const UserId = req.user.id
+    const UserId = helpers.getUser(req).id
     const RestaurantId = req.params.restaurantId
     Favorite.findOne({
       where: { UserId, RestaurantId }
