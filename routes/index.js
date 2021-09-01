@@ -38,6 +38,9 @@ module.exports = (app, passport) => {
   // 我的最愛
   app.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
   app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
+  // Like 功能
+  app.post('/like/:restaurantId', authenticated, userController.clickToLike)
+  app.delete('/like/:restaurantId', authenticated, userController.removeLike)
   // 新增評論
   app.post('/comments', authenticated, commentController.postComment)
   // 刪除評論

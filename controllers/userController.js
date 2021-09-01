@@ -4,6 +4,7 @@ const User = db.User
 const Restaurant = db.Restaurant
 const Comment = db.Comment
 const Favorite = db.Favorite
+const Like = db.Like
 
 const helpers = require('../_helpers')
 
@@ -171,6 +172,28 @@ const userController = {
     }).then((restaurant) => {
       res.redirect('back')
     })
+  },
+  // 喜歡餐廳
+  clickToLike: (req, res) => {
+    const UserId = helpers.getUser(req).id
+    const RestaurantId = req.params.restaurantId
+    Like.create({
+      UserId, RestaurantId
+    }).then((like) => {
+      return res.redirect('back')
+    }).catch(err => console.log(err))
+  },
+  // 取消喜歡
+  removeLike: (req, res) => {
+    const UserId = helpers.getUser(req).id
+    const RestaurantId = req.params.restaurantId
+    Like.findOne({
+      where: { UserId, RestaurantId }
+    }).then((like) => {
+      like.destroy()
+    }).then((restaurant) => {
+      res.redirect('back')
+    }).catch(err => console.log(err))
   }
 }
 
