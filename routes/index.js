@@ -29,6 +29,8 @@ module.exports = (app, passport) => {
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
   // 前台餐廳列表
   app.get('/restaurants', authenticated, restController.getRestaurants)
+  // 取得最新資料
+  app.get('/restaurants/feeds', authenticated, restController.getFeeds)
   // 單一餐廳
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
   // 新增評論

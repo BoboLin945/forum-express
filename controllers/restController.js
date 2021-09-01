@@ -61,5 +61,29 @@ const restController = {
       })
       .catch(err => console.log(err))
   },
+  // 取得最新動態
+  getFeeds: (req, res) => {
+    return Promise.all([
+      Restaurant.findAll({
+        order: [['createdAt', 'DESC']],
+        limit: 10,
+        raw: true,
+        nest: true,
+        include: [Category]
+      }),
+      Comment.findAll({
+        order: [['createdAt', 'DESC']],
+        limit: 10,
+        raw: true,
+        nest: true,
+        include: [User, Restaurant]
+      })
+    ]).then(([restaurants, comments]) => {
+      return res.render('feeds', {
+        restaurants, comments
+      })
+    })
+  },
 }
+
 module.exports = restController
