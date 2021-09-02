@@ -95,7 +95,7 @@ const userController = {
       // 剔除重複餐廳
       const set = new Set()
       const commentedRes = result.filter(res => !set.has(res.id) ? set.add(res.id) : false)
-      const comNum = Number(comments.length)
+      const comNum = Number(commentedRes.length)
       // Followers
       let followers = user.dataValues.Followers
       followers = followers.map(follower => ({
