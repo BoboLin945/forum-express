@@ -106,9 +106,15 @@ const restController = {
     })
       .then((comments) => {
         const commentNum = comments.count
-        Restaurant.findByPk(id, { include: [Category] })
+        Restaurant.findByPk(id, {
+          include: [
+            Category,
+            { model: User, as: 'FavoritedUsers' }
+          ]
+        })
           .then((restaurant) => {
-            res.render('dashboard', { restaurant: restaurant.toJSON(), commentNum })
+            const favoritedUserNum = restaurant.FavoritedUsers.length
+            res.render('dashboard', { restaurant: restaurant.toJSON(), commentNum, favoritedUserNum })
           })
           .catch(err => console.log(err))
       })
@@ -128,7 +134,7 @@ const restController = {
       const data = restaurants.sort(function (a, b) {
         return b.favoritedUsersCount - a.favoritedUsersCount;
       }).slice(0, 10)
-      
+
       res.render('topRestaurant', { data })
     })
   }
