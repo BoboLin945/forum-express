@@ -47,12 +47,14 @@ module.exports = (app, passport) => {
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
   // 美食達人
   app.get('/users/top', authenticated, userController.getTopUser)
+  app.post('/following/:userId', authenticated, userController.addFollowing)
+  app.delete('/following/:userId', authenticated, userController.removeFollowing)
   // User Profile
   app.get('/users/:id', authenticated, userController.getUser)
   // Edit profile
   app.get('/users/:id/edit', authenticated, userController.editUser)
   app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
-  
+
 
   // 後台首頁
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
