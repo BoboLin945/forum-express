@@ -43,7 +43,7 @@
         {{#each followings}}
         <div class="eachItem mr-1" style="max-width: 120px;">
           <div class="name text-center" style="min-height: 50px;">{{this.name}}</div>
-          <a href="/restaurants/{{this.id}}">
+          <a href="/users/{{this.id}}">
             <img class="rounded mx-auto d-block" {{#if this.image}} src="{{this.image}}" {{else}}
               src="http://www.freeiconspng.com/uploads/profile-icon-9.png" {{/if}} width="70px" height="70px">
           </a>
@@ -76,7 +76,7 @@
         {{#each followers}}
         <div class="eachItem mr-1 " style="max-width: 120px;">
           <div class="name text-center" style="min-height: 50px;">{{this.name}}</div>
-          <a href="/restaurants/{{this.id}}">
+          <a href="/users/{{this.id}}">
             <img class="rounded mx-auto d-block" {{#if this.image}} src="{{this.image}}" {{else}}
               src="http://www.freeiconspng.com/uploads/profile-icon-9.png" {{/if}} width="70px" height="70px">
           </a>
