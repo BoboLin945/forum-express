@@ -1,42 +1,104 @@
-<div class="container-profile mt-3">
+<div class="container-profile mt-3 mb-5">
   <div class="row">
     <div class="avatar col-12 col-md-4">
       <img class="img-responsive center-block rounded-circle border" {{#if userProfile.image}}
         src="{{userProfile.image}}" {{else}} src="http://www.freeiconspng.com/uploads/profile-icon-9.png" {{/if}}
         style="width: 200px; height:200px; margin-bottom: 25px;">
     </div>
-    <div class="mt-3 profile-info col-12 col-md-8">
-      <h3>{{userProfile.name}}</h3>
-      <h6>{{userProfile.email}}</h6>
-      <h6><strong>{{ commentNum }}</strong> 已評論餐廳</h6>
+    <div class="mt-3 mb-2 profile-info col-12 col-md-8">
+      <h2>{{userProfile.name}}</h2>
+      <h5>{{userProfile.email}}</h5>
+      <p><strong>{{#if comNum}}{{ comNum }}{{else}}0{{/if}}</strong> 已評論餐廳</p>
+      <p><strong>{{#if resNum}}{{ resNum }}{{else}}0{{/if}}</strong> 收藏的餐廳</p>
+      <p><strong>{{#if followingNum}}{{ followingNum }}{{else}}0{{/if}}</strong> followings</p>
+      <p><strong>{{#if followerNum}}{{ followerNum }}{{else}}0{{/if}}</strong> followers</p>
       {{#ifCond loginUserId userProfile.id}}
       <a href='/users/{{loginUserId}}/edit'>
-        <button type="button" class="btn btn-info btn-sm mt-5">Edit Profile</button>
+        <button type="button" class="btn btn-info btn-sm mt-4">Edit Profile</button>
       </a>
+      {{else}}
+      {{#if isFollowed}}
+      <form action="/following/{{userProfile.id}}?_method=DELETE" method="POST" style="display: contents;"><button
+          type="submit" class="btn btn-danger btn-sm">取消追蹤</button></form>
+      {{else}}
+      <form action="/following/{{userProfile.id}}" method="POST" style="display: contents;"><button type="submit"
+          class="btn btn-primary btn-sm">追蹤</button></form>
+      {{/if}}
       {{/ifCond}}
+      <p>
+
+      </p>
     </div>
   </div>
 </div>
 </div>
 
-<div class="card">
-  <div class="card-header">
-    {{ commentNum }} 已評論餐廳
-  </div>
-
-
-  {{#each restaurants}}
-  <div class="container d-flex">
-    <div class="card text-center m-1" style="width: 10rem;">
-      <a href="/restaurants/{{this.id}}">
-        <img {{#if this.image}} src="{{this.image}}" {{else}}
-          src="https://cdn-icons-png.flaticon.com/512/126/126122.png" {{/if}} class="m-1 img-thumbnail"
-          alt="{{this.name}}" style="width: 100px; height: 100px">
-      </a>
-      <div class="card-body">
-        <p class="card-text">{{this.name}}</p>
+<div class="container-cards mt-3 mb-5 ml-5">
+  <div class="row">
+    <div class="col-md-5 card shadow m-1">
+      <div class="card-header text-center">
+        <h6><strong>{{ followingNum }}</strong> followings (追蹤者)</h6>
+      </div>
+      <div class="card-body d-flex">
+        {{#each followings}}
+        <div class="eachItem mr-1" style="max-width: 120px;">
+          <div class="name text-center" style="min-height: 50px;">{{this.name}}</div>
+          <a href="/restaurants/{{this.id}}">
+            <img class="rounded mx-auto d-block" {{#if this.image}} src="{{this.image}}" {{else}}
+              src="http://www.freeiconspng.com/uploads/profile-icon-9.png" {{/if}} width="70px" height="70px">
+          </a>
+        </div>
+        {{/each}}
       </div>
     </div>
-    {{/each}}
+
+    <div class="col-md-6 card shadow m-1">
+      <div class="card-header text-center">
+        <h6><strong>{{ resNum }}</strong> 收藏的餐廳</h6>
+      </div>
+      <div class="card-body d-flex">
+        {{#each restaurants}}
+        <div class="eachItem mr-1" style="max-width: 120px;">
+          <div class="name text-center" style="min-height: 50px;">{{this.name}}</div>
+          <a href="/restaurants/{{this.id}}">
+            <img class="rounded mx-auto d-block" src="{{this.image}}" width="100px" height="100px">
+          </a>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="col-md-5 card shadow m-1">
+      <div class="card-header text-center">
+        <h6><strong>{{ followerNum }}</strong> followers (追隨者)</h6>
+      </div>
+      <div class="card-body d-flex">
+        {{#each followers}}
+        <div class="eachItem mr-1 " style="max-width: 120px;">
+          <div class="name text-center" style="min-height: 50px;">{{this.name}}</div>
+          <a href="/restaurants/{{this.id}}">
+            <img class="rounded mx-auto d-block" {{#if this.image}} src="{{this.image}}" {{else}}
+              src="http://www.freeiconspng.com/uploads/profile-icon-9.png" {{/if}} width="70px" height="70px">
+          </a>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="col-md-6 card shadow m-1">
+      <div class="card-header text-center">
+        <h6><strong>{{ comNum }}</strong> 已評論餐廳</h6>
+      </div>
+      <div class="card-body d-flex">
+        {{#each commentedRes}}
+        <div class="eachItem mr-1" style="max-width: 120px;">
+          <div class="name text-center" style="min-height: 50px;">{{this.name}}</div>
+          <a href="/restaurants/{{this.id}}">
+            <img class="rounded mx-auto d-block" src="{{this.image}}" width="100px" height="100px">
+          </a>
+        </div>
+        {{/each}}
+      </div>
+    </div>
   </div>
 </div>
