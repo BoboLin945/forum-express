@@ -24,13 +24,19 @@
     {{ commentNum }} 已評論餐廳
   </div>
 
-  <div class="card-body">
-    {{#each restaurants}}
-    <a href="/restaurants/{{this.id}}">
-      <img {{#if this.image}} src="{{this.image}}" {{else}} src="https://cdn-icons-png.flaticon.com/512/126/126122.png"
-        {{/if}} class="m-1 img-thumbnail" alt="..." style="width: 70px; height: 70px">
-      {{/each}}
-    </a>
-  </div>
 
+  {{#each restaurants}}
+  <div class="container d-flex">
+    <div class="card text-center m-1" style="width: 10rem;">
+      <a href="/restaurants/{{this.id}}">
+        <img {{#if this.image}} src="{{this.image}}" {{else}}
+          src="https://cdn-icons-png.flaticon.com/512/126/126122.png" {{/if}} class="m-1 img-thumbnail"
+          alt="{{this.name}}" style="width: 100px; height: 100px">
+      </a>
+      <div class="card-body">
+        <p class="card-text">{{this.name}}</p>
+      </div>
+    </div>
+    {{/each}}
+  </div>
 </div>

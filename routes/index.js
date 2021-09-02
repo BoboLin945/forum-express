@@ -31,6 +31,8 @@ module.exports = (app, passport) => {
   app.get('/restaurants', authenticated, restController.getRestaurants)
   // 取得最新資料
   app.get('/restaurants/feeds', authenticated, restController.getFeeds)
+  // 人氣餐廳
+  app.get('/restaurants/top', authenticated, restController.getTopRestaurants)
   // 單一餐廳 Dashboard
   app.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
   // 單一餐廳
