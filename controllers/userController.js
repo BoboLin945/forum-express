@@ -13,6 +13,7 @@ const imgur = require('imgur-node-api')
 const { resolve } = require('path')
 const { rejects } = require('assert')
 const restaurant = require('../models/restaurant')
+const user = require('../models/user')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const userController = {
@@ -194,6 +195,24 @@ const userController = {
     }).then((restaurant) => {
       res.redirect('back')
     }).catch(err => console.log(err))
+  },
+  // 美食達人頁面
+  getTopUser: (req, res) => {
+    return User.findAll({
+      include: [
+        { model: User, as: 'Followers' }
+      ]
+    }).then((users) => {
+      users = users.map(user => ({
+        ...user.dataValues,
+        // count follower number
+        FollowerCount: user.Followers.length,
+        // login user is follow the user or not
+        isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
+      }))
+      users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+      return res.render('topUser', { users })
+    })
   }
 }
 
