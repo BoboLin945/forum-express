@@ -18,6 +18,15 @@ const adminService = {
       callback({ restaurants })
     })
   },
+  // R - 瀏覽餐廳
+  getRestaurant: (req, res, callback) => {
+    const id = req.params.id
+    return Restaurant.findByPk(id, {
+      include: [Category]
+    }).then(restaurant => {
+      callback({ restaurant: restaurant.toJSON() })
+    })
+  },
 }
 
 module.exports = adminService

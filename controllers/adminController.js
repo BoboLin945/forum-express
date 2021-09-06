@@ -65,11 +65,8 @@ const adminController = {
   },
   // R - 瀏覽餐廳
   getRestaurant: (req, res) => {
-    const id = req.params.id
-    return Restaurant.findByPk(id, {
-      include: [Category]
-    }).then(restaurant => {
-      return res.render('admin/restaurant', { restaurant: restaurant.toJSON() })
+    adminService.getRestaurant(req, res, (data) => {
+      return res.render('admin/restaurant', data)
     })
   },
   // 編輯餐廳表單
