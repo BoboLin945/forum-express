@@ -3,6 +3,8 @@ const Restaurant = db.Restaurant
 const User = db.User
 const Category = db.Category
 
+const adminService = require('../services/adminService.js')
+
 const fs = require('fs')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
@@ -10,12 +12,8 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const adminController = {
   // 取得餐廳列表
   getRestaurants: (req, res) => {
-    return Restaurant.findAll({
-      raw: true,
-      nest: true,
-      include: [Category]
-    }).then(restaurants => {
-      return res.render('admin/restaurants', { restaurants })
+    adminService.getRestaurants(req, res, (data) => {
+      return res.render('admin/restaurants', data)
     })
   },
   // 新增餐廳表單
@@ -49,7 +47,6 @@ const adminController = {
           req.flash('success_messages', 'restaurant was successfully created')
           return res.redirect('/admin/restaurants')
         })
-
       })
     } else {
       return Restaurant.create({
@@ -113,7 +110,6 @@ const adminController = {
               res.redirect('/admin/restaurants')
             })
           })
-
       })
     } else {
       return Restaurant.findByPk(id)
