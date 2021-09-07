@@ -17,24 +17,11 @@ const restController = {
       res.render('restaurants', data)
     })
   },
-  // 取得單一餐廳
+  // 取得單一餐廳 detail
   getRestaurant: (req, res) => {
-    const id = req.params.id
-    Restaurant.findByPk(id, {
-      include: [
-        Category,
-        { model: User, as: 'FavoritedUsers' },
-        { model: User, as: 'LikedUsers' },
-        { model: Comment, include: [User] }
-      ]
+    restService.getRestaurant(req, res, (data) => {
+      res.render('restaurant', data)
     })
-      .then((restaurant) => {
-        const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(helpers.getUser(req).id)
-        const isLiked = restaurant.LikedUsers.map(likedUser => likedUser.id).includes(helpers.getUser(req).id)
-        restaurant.increment('viewCounts', { by: 1 })
-        return res.render('restaurant', { restaurant: restaurant.toJSON(), isFavorited, isLiked })
-      })
-      .catch(err => console.log(err))
   },
   // 取得最新動態
   getFeeds: (req, res) => {

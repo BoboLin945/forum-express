@@ -40,7 +40,7 @@ router.get('/restaurants/feeds', authenticated, restController.getFeeds)
 router.get('/restaurants/top', authenticated, restController.getTopRestaurants)
 // 單一餐廳 Dashboard
 router.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
-// 單一餐廳
+// 單一餐廳 detail
 router.get('/restaurants/:id', authenticated, restController.getRestaurant)
 // 我的最愛
 router.post('/favorite/:restaurantId', authenticated, userController.addFavorite)

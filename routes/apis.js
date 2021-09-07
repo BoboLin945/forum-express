@@ -26,6 +26,8 @@ const authenticateAdmin = (req, res, next) => {
 router.get('/', authenticated, (req, res) => res.redirect('/api/restaurants'))
 // 前台餐廳列表
 router.get('/restaurants', authenticated, restController.getRestaurants)
+// 單一餐廳 detail
+router.get('/restaurants/:id', authenticated, restController.getRestaurant)
 
 // 取得後台餐廳清單列表
 router.get('/admin/restaurants', authenticated, authenticateAdmin, adminController.getRestaurants)

@@ -53,6 +53,25 @@ const restController = {
           })
       })
   },
+  // 取得單一餐廳
+  getRestaurant: (req, res, callback) => {
+    const id = req.params.id
+    Restaurant.findByPk(id, {
+      include: [
+        Category,
+        { model: User, as: 'FavoritedUsers' },
+        { model: User, as: 'LikedUsers' },
+        { model: Comment, include: [User] }
+      ]
+    })
+      .then((restaurant) => {
+        const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(helpers.getUser(req).id)
+        const isLiked = restaurant.LikedUsers.map(likedUser => likedUser.id).includes(helpers.getUser(req).id)
+        restaurant.increment('viewCounts', { by: 1 })
+        return callback({ restaurant: restaurant.toJSON(), isFavorited, isLiked })
+      })
+      .catch(err => console.log(err))
+  },
 }
 
 module.exports = restController
