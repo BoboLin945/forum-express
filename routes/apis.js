@@ -28,6 +28,8 @@ router.get('/', authenticated, (req, res) => res.redirect('/api/restaurants'))
 router.get('/restaurants', authenticated, restController.getRestaurants)
 // 取得最新動態
 router.get('/restaurants/feeds', authenticated, restController.getFeeds)
+// 人氣餐廳 top restaurants
+router.get('/restaurants/top', authenticated, restController.getTopRestaurants)
 // 單一餐廳 detail
 router.get('/restaurants/:id', authenticated, restController.getRestaurant)
 // 單一餐廳 Dashboard
