@@ -38,6 +38,43 @@ const adminService = {
           })
       })
   },
+  // C - 新增餐廳
+  postRestaurant: (req, res, callback) => {
+    const { name, tel, address, opening_hours, description, categoryId } = req.body
+    if (!name) {
+      return callback({ status: 'error', message: "name didn't exist" })
+    }
+
+    const { file } = req // equal to const file = req.file
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.upload(file.path, (err, img) => {
+        return Restaurant.create({
+          name,
+          tel,
+          address,
+          opening_hours,
+          description,
+          image: file ? img.data.link : null,
+          CategoryId: categoryId
+        }).then((restaurant) => {
+          callback({ status: 'success', message: "restaurant was successfully created" })
+        })
+      })
+    } else {
+      return Restaurant.create({
+        name,
+        tel,
+        address,
+        opening_hours,
+        description,
+        image: null,
+        CategoryId: categoryId
+      }).then((restaurant) => {
+        callback({ status: 'success', message: "restaurant was successfully created" })
+      })
+    }
+  },
 }
 
 module.exports = adminService

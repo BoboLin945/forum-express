@@ -1,6 +1,9 @@
 const express = require('express')
 const router = express.Router()
 
+const multer = require('multer')
+const upload = multer({ dest: 'temp/' })
+
 const adminController = require('../controllers/api/adminController.js')
 const categoryController = require('../controllers/api/categoryController.js')
 
@@ -12,6 +15,8 @@ router.get('/admin/restaurants/:id', adminController.getRestaurant)
 // 後台瀏覽全部類別
 router.get('/admin/categories', categoryController.getCategories)
 
+// 新增單一餐廳
+router.post('/admin/restaurants/', upload.single('image'), adminController.postRestaurant)
 // 刪除單一餐廳
 router.delete('/admin/restaurants/:id', adminController.deleteRestaurant)
 
