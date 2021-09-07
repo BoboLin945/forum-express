@@ -19,6 +19,12 @@ const restController = {
       return res.json(data)
     })
   },
+  // 取得餐廳其他詳細資料
+  getDashboard: (req, res) => {
+    restService.getRestaurant(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = restController

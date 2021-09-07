@@ -30,6 +30,8 @@ router.get('/restaurants', authenticated, restController.getRestaurants)
 router.get('/restaurants/feeds', authenticated, restController.getFeeds)
 // 單一餐廳 detail
 router.get('/restaurants/:id', authenticated, restController.getRestaurant)
+// 單一餐廳 Dashboard
+router.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
 
 
 // 取得後台餐廳清單列表

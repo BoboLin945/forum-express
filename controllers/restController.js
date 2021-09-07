@@ -31,27 +31,9 @@ const restController = {
   },
   // 取得餐廳其他詳細資料
   getDashboard: (req, res) => {
-    // get restaurant id
-    const id = req.params.id
-    Comment.findAndCountAll({
-      where: { RestaurantId: id },
-      raw: true,
-      nest: true
+    restService.getRestaurant(req, res, (data) => {
+      res.render('dashboard', data)
     })
-      .then((comments) => {
-        const commentNum = comments.count
-        Restaurant.findByPk(id, {
-          include: [
-            Category,
-            { model: User, as: 'FavoritedUsers' }
-          ]
-        })
-          .then((restaurant) => {
-            const favoritedUserNum = restaurant.FavoritedUsers.length
-            res.render('dashboard', { restaurant: restaurant.toJSON(), commentNum, favoritedUserNum })
-          })
-          .catch(err => console.log(err))
-      })
   },
   // top restaurants
   getTopRestaurants: (req, res) => {
