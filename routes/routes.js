@@ -34,7 +34,7 @@ const authenticatedAdmin = (req, res, next) => {
 router.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
 // 前台餐廳列表
 router.get('/restaurants', authenticated, restController.getRestaurants)
-// 取得最新資料
+// 取得最新動態
 router.get('/restaurants/feeds', authenticated, restController.getFeeds)
 // 人氣餐廳
 router.get('/restaurants/top', authenticated, restController.getTopRestaurants)

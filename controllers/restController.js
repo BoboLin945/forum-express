@@ -25,25 +25,8 @@ const restController = {
   },
   // 取得最新動態
   getFeeds: (req, res) => {
-    return Promise.all([
-      Restaurant.findAll({
-        order: [['createdAt', 'DESC']],
-        limit: 10,
-        raw: true,
-        nest: true,
-        include: [Category]
-      }),
-      Comment.findAll({
-        order: [['createdAt', 'DESC']],
-        limit: 10,
-        raw: true,
-        nest: true,
-        include: [User, Restaurant]
-      })
-    ]).then(([restaurants, comments]) => {
-      return res.render('feeds', {
-        restaurants, comments
-      })
+    restService.getFeeds(req, res, (data) => {
+      return res.render('feeds', data)
     })
   },
   // 取得餐廳其他詳細資料
