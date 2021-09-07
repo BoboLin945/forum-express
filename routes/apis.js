@@ -12,4 +12,7 @@ router.get('/admin/restaurants/:id', adminController.getRestaurant)
 // 後台瀏覽全部類別
 router.get('/admin/categories', categoryController.getCategories)
 
+// 刪除單一餐廳
+router.delete('/admin/restaurants/:id', adminController.deleteRestaurant)
+
 module.exports = router

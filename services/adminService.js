@@ -27,6 +27,17 @@ const adminService = {
       callback({ restaurant: restaurant.toJSON() })
     })
   },
+  // 刪除單一餐廳
+  deleteRestaurant: (req, res, callback) => {
+    const id = req.params.id
+    return Restaurant.findByPk(id)
+      .then((restaurant) => {
+        restaurant.destroy()
+          .then((restaurant) => {
+            callback({ status: 'success', message: '' })
+          })
+      })
+  },
 }
 
 module.exports = adminService

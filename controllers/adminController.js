@@ -128,14 +128,11 @@ const adminController = {
   },
   // D - 刪除餐廳
   deleteRestaurant: (req, res) => {
-    const id = req.params.id
-    return Restaurant.findByPk(id)
-      .then((restaurant) => {
-        restaurant.destroy()
-          .then((restaurant) => {
-            res.redirect('/admin/restaurants')
-          })
-      })
+    adminService.deleteRestaurant(req, res, (data) => {
+      if(data['status'] === 'success') {
+        return res.redirect('/admin/restaurants')
+      }
+    })
   },
   // 取得使用者列表
   getUsers: (req, res) => {
