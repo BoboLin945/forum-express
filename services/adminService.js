@@ -127,6 +127,28 @@ const adminService = {
       })
       .catch(error => console.log(error))
   },
+  // 使用者角色權限切換
+  toggleAdmin: (req, res, callback) => {
+    const id = req.params.id
+    User.findByPk(id)
+      .then((user) => {
+        const isAdmin = user.isAdmin ? false : true
+        user.update({
+          isAdmin
+        })
+          .then((user) => {
+            let msg = ''
+            if (user.isAdmin) {
+              msg += '權限已設定為 Admin'
+            } else { msg += '權限已設定為 User' }
+            callback({status: 'success', message: msg})
+            // req.flash('success_messages', msg)
+            // res.redirect('/admin/users')
+          })
+          .catch(error => console.log(error))
+      })
+      .catch(err => console.log(err))
+  }
 }
 
 module.exports = adminService

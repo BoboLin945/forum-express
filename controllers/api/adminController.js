@@ -40,6 +40,12 @@ const adminController = {
     adminService.getUsers(req, res, (data) => {
       res.json(data)
     })
+  },
+  // 使用者角色權限切換
+  toggleAdmin: (req, res) => {
+    adminService.toggleAdmin(req, res, (data) => {
+      res.json(data)
+    })
   }
 }
 module.exports = adminController

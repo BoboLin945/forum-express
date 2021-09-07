@@ -44,6 +44,8 @@ router.delete('/admin/categories/:id', authenticated, authenticateAdmin, categor
 
 // 後台瀏覽全部使用者
 router.get('/admin/users', authenticated, authenticateAdmin, adminController.getUsers)
+// 後台 user toggle role
+router.put('/admin/users/:id/toggleAdmin', authenticated, authenticateAdmin, adminController.toggleAdmin)
 
 // JWT signin
 router.post('/signin', userController.signIn)

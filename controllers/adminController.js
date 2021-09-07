@@ -77,24 +77,12 @@ const adminController = {
   },
   // 使用者角色權限切換
   toggleAdmin: (req, res) => {
-    const id = req.params.id
-    User.findByPk(id)
-      .then((user) => {
-        const isAdmin = user.isAdmin ? false : true
-        user.update({
-          isAdmin
-        })
-          .then((user) => {
-            let msg = ''
-            if (user.isAdmin) {
-              msg += '權限已設定為 Admin'
-            } else { msg += '權限已設定為 User' }
-            req.flash('success_messages', msg)
-            res.redirect('/admin/users')
-          })
-          .catch(error => console.log(error))
-      })
-      .catch(err => console.log(err))
+    adminService.toggleAdmin(req, res, (data) => {
+      if (data['status'] === 'success') {
+        req.flash('success_messages', data.message)
+        return res.redirect('/admin/users')
+      }
+    })
   }
 }
 
