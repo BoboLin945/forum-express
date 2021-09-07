@@ -10,6 +10,12 @@ const categoryController = {
       return res.json(data)
     })
   },
+  // create category
+  postCategory: (req, res) => {
+    categoryService.postCategory(req, res, (data) => {
+      return res.json(data)
+    })
+  }
 }
 
 module.exports = categoryController
