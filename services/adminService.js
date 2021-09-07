@@ -119,6 +119,14 @@ const adminService = {
         })
     }
   },
+  // 取得使用者列表
+  getUsers: (req, res, callback) => {
+    User.findAll({ raw: true, nest: true })
+      .then((users) => {
+        callback({ users })
+      })
+      .catch(error => console.log(error))
+  },
 }
 
 module.exports = adminService

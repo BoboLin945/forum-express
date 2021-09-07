@@ -42,9 +42,13 @@ router.put('/admin/categories/:id', authenticated, authenticateAdmin, categoryCo
 // 刪除類別
 router.delete('/admin/categories/:id', authenticated, authenticateAdmin, categoryController.deleteCategory)
 
+// 後台瀏覽全部使用者
+router.get('/admin/users', authenticated, authenticateAdmin, adminController.getUsers)
+
 // JWT signin
 router.post('/signin', userController.signIn)
 // register
 router.post('signup', userController.signUp)
+
 
 module.exports = router

@@ -20,7 +20,7 @@ const adminController = {
   // 刪除單一餐廳
   deleteRestaurant: (req, res) => {
     adminService.deleteRestaurant(req, res, (data) => {
-      res.json({ data })
+      res.json(data)
     })
   },
   // 新增單一餐廳
@@ -32,6 +32,12 @@ const adminController = {
   // 修改單一餐廳
   putRestaurant: (req, res) => {
     adminService.putRestaurant(req, res, (data) => {
+      res.json(data)
+    })
+  },
+  // 取得使用者列表
+  getUsers: (req, res) => {
+    adminService.getUsers(req, res, (data) => {
       res.json(data)
     })
   }

@@ -71,11 +71,9 @@ const adminController = {
   },
   // 取得使用者列表
   getUsers: (req, res) => {
-    User.findAll({ raw: true })
-      .then((users) => {
-        res.render('admin/users', { users })
-      })
-      .catch(error => console.log(error))
+    adminService.getUsers(req, res, (data) => {
+      return res.render('admin/users', data)
+    })
   },
   // 使用者角色權限切換
   toggleAdmin: (req, res) => {
