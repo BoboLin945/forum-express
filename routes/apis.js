@@ -9,6 +9,7 @@ const passport = require('../config/passport')
 const adminController = require('../controllers/api/adminController.js')
 const categoryController = require('../controllers/api/categoryController.js')
 const userController = require('../controllers/api/userController.js')
+const restController = require('../controllers/api/restController.js')
 
 const authenticated = passport.authenticate('jwt', { session: false })
 
@@ -20,6 +21,11 @@ const authenticateAdmin = (req, res, next) => {
     return res.json({ status: 'error', message: 'permission denied' })
   }
 }
+
+// 首頁
+router.get('/', authenticated, (req, res) => res.redirect('/api/restaurants'))
+// 前台餐廳列表
+router.get('/restaurants', authenticated, restController.getRestaurants)
 
 // 取得後台餐廳清單列表
 router.get('/admin/restaurants', authenticated, authenticateAdmin, adminController.getRestaurants)
