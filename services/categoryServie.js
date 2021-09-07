@@ -54,6 +54,18 @@ const categoryService = {
         })
     }
   },
+  // delete category
+  deleteCategory: (req, res, callback) => {
+    const id = req.params.id
+    Category.findByPk(id)
+      .then((category => {
+        category.destroy()
+      }))
+      .then((category) => {
+        callback({ status: 'success', message: '' })
+      })
+      .catch(err => console.log(err))
+  }
 }
 
 module.exports = categoryService

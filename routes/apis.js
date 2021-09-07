@@ -25,5 +25,7 @@ router.get('/admin/categories', categoryController.getCategories)
 router.post('/admin/categories', categoryController.postCategory)
 // 修改類別
 router.put('/admin/categories/:id', categoryController.putCategory)
+// 刪除類別
+router.delete('/admin/categories/:id', categoryController.deleteCategory)
 
 module.exports = router
