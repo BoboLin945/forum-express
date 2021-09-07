@@ -23,6 +23,7 @@ router.put('/admin/restaurants/:id', upload.single('image'), adminController.put
 router.get('/admin/categories', categoryController.getCategories)
 // 新增類別
 router.post('/admin/categories', categoryController.postCategory)
-
+// 修改類別
+router.put('/admin/categories/:id', categoryController.putCategory)
 
 module.exports = router

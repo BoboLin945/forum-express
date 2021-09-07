@@ -35,6 +35,25 @@ const categoryService = {
         })
     }
   },
+  // update category
+  putCategory: (req, res, callback) => {
+    const { name } = req.body
+    const id = req.params.id
+    if (!name) {
+      return callback({ status: 'error', message: "請輸入分類名稱。" })
+    } else {
+      Category.findByPk(id)
+        .then((category) => {
+          category.update({
+            name
+          })
+            .then((category => {
+              callback({ status: 'success', message: "修改分類成功。" })
+            }))
+            .catch(err => console.log(err))
+        })
+    }
+  },
 }
 
 module.exports = categoryService
