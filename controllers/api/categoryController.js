@@ -1,7 +1,7 @@
 const db = require('../../models')
 const Category = db.Category
 
-const categoryService = require('../../services/categoryServie.js')
+const categoryService = require('../../services/categoryService.js')
 
 const categoryController = {
   // 取得分類列表
