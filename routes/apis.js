@@ -19,5 +19,7 @@ router.get('/admin/categories', categoryController.getCategories)
 router.post('/admin/restaurants/', upload.single('image'), adminController.postRestaurant)
 // 刪除單一餐廳
 router.delete('/admin/restaurants/:id', adminController.deleteRestaurant)
+// 修改單一餐廳
+router.put('/admin/restaurants/:id', upload.single('image'), adminController.putRestaurant)
 
 module.exports = router

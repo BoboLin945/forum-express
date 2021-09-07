@@ -24,8 +24,14 @@ const adminController = {
     })
   },
   // 新增單一餐廳
-  postRestaurant:(req, res) => {
+  postRestaurant: (req, res) => {
     adminService.postRestaurant(req, res, (data) => {
+      res.json(data)
+    })
+  },
+  // 修改單一餐廳
+  putRestaurant: (req, res) => {
+    adminService.putRestaurant(req, res, (data) => {
       res.json(data)
     })
   }
