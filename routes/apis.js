@@ -10,6 +10,7 @@ const adminController = require('../controllers/api/adminController.js')
 const categoryController = require('../controllers/api/categoryController.js')
 const userController = require('../controllers/api/userController.js')
 const restController = require('../controllers/api/restController.js')
+const commentController = require('../controllers/api/commentController.js')
 
 const authenticated = passport.authenticate('jwt', { session: false })
 
@@ -49,7 +50,10 @@ router.delete('/favorite/:restaurantId', authenticated, userController.removeFav
 // Like 功能
 router.post('/like/:restaurantId', authenticated, userController.clickToLike)
 router.delete('/like/:restaurantId', authenticated, userController.removeLike)
-
+// 新增評論
+router.post('/comments', authenticated, commentController.postComment)
+// 刪除評論
+router.delete('/comments/:id', authenticated, authenticateAdmin, commentController.deleteComment)
 // 取得後台餐廳清單列表
 router.get('/admin/restaurants', authenticated, authenticateAdmin, adminController.getRestaurants)
 
