@@ -71,6 +71,12 @@ const userController = {
       return res.json(data)
     })
   },
+  // edit profile
+  putUser: (req, res) => {
+    userService.putUser(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = userController

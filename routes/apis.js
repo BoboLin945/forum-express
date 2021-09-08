@@ -26,6 +26,8 @@ const authenticateAdmin = (req, res, next) => {
 router.get('/', authenticated, (req, res) => res.redirect('/api/restaurants'))
 // 查看 User Profile
 router.get('/users/:id', authenticated, userController.getUser)
+// Edit User Profile
+router.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
 // 前台餐廳列表
 router.get('/restaurants', authenticated, restController.getRestaurants)
 // 取得最新動態

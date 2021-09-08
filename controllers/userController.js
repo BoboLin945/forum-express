@@ -84,46 +84,15 @@ const userController = {
   },
   // edit profile
   putUser: (req, res) => {
-    const { name } = req.body
-    const id = req.params.id
-
-    if (Number(id) !== helpers.getUser(req).id) {
-      req.flash('error_messages', "cannot edit other user's profile")
-      return res.redirect('back')
-    }
-
-    if (!name) {
-      req.flash('error_messages', "name didn't exist")
-      return res.redirect('back')
-    }
-
-    const { file } = req
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID);
-      imgur.upload(file.path, (err, img) => {
-        return User.findByPk(id)
-          .then((user) => {
-            user.update({
-              name,
-              image: file ? img.data.link : user.image,
-            }).then((user) => {
-              req.flash('success_messages', 'user was successfully to update')
-              res.redirect(`/users/${id}`)
-            })
-          })
-      })
-    } else {
-      return User.findByPk(id)
-        .then((user) => {
-          user.update({
-            name,
-            image: user.image,
-          }).then((user) => {
-            req.flash('success_messages', 'user was successfully to update')
-            res.redirect(`/users/${id}`)
-          })
-        })
-    }
+    userService.putUser(req, res, (data) => {
+      if(data['status'] === 'error') {
+        req.flash('error_messages', data['message'])
+        return res.redirect('back')
+      } else {
+        req.flash('success_messages', data['message'])
+        return res.redirect(`/users/${req.params.id}`)
+      }
+    })
   },
   // 新增餐廳至最愛
   addFavorite: (req, res) => {
