@@ -41,6 +41,9 @@ router.get('/restaurants/:id/dashboard', authenticated, restController.getDashbo
 // 我的最愛
 router.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
 router.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
+// Like 功能
+router.post('/like/:restaurantId', authenticated, userController.clickToLike)
+router.delete('/like/:restaurantId', authenticated, userController.removeLike)
 
 // 取得後台餐廳清單列表
 router.get('/admin/restaurants', authenticated, authenticateAdmin, adminController.getRestaurants)

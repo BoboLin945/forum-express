@@ -108,25 +108,15 @@ const userController = {
   },
   // 喜歡餐廳
   clickToLike: (req, res) => {
-    const UserId = helpers.getUser(req).id
-    const RestaurantId = req.params.restaurantId
-    Like.create({
-      UserId, RestaurantId
-    }).then((like) => {
+    userService.clickToLike(req, res, (data) => {
       return res.redirect('back')
-    }).catch(err => console.log(err))
+    })
   },
   // 取消喜歡
   removeLike: (req, res) => {
-    const UserId = helpers.getUser(req).id
-    const RestaurantId = req.params.restaurantId
-    Like.findOne({
-      where: { UserId, RestaurantId }
-    }).then((like) => {
-      like.destroy()
-    }).then((restaurant) => {
-      res.redirect('back')
-    }).catch(err => console.log(err))
+    userService.removeLike(req, res, (data) => {
+      return res.redirect('back')
+    })
   },
   // 美食達人頁面
   getTopUser: (req, res) => {

@@ -89,6 +89,18 @@ const userController = {
       return res.json(data)
     })
   },
+  // 喜歡餐廳
+  clickToLike: (req, res) => {
+    userService.clickToLike(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+  // 取消喜歡
+  removeLike: (req, res) => {
+    userService.removeLike(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = userController
