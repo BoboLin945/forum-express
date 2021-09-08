@@ -38,6 +38,9 @@ router.get('/restaurants/top', authenticated, restController.getTopRestaurants)
 router.get('/restaurants/:id', authenticated, restController.getRestaurant)
 // 單一餐廳 Dashboard
 router.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
+// 我的最愛
+router.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
+router.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
 
 // 取得後台餐廳清單列表
 router.get('/admin/restaurants', authenticated, authenticateAdmin, adminController.getRestaurants)

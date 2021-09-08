@@ -77,6 +77,18 @@ const userController = {
       return res.json(data)
     })
   },
+  // 新增餐廳至最愛
+  addFavorite: (req, res) => {
+    userService.addFavorite(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+  // 移除最愛
+  removeFavorite: (req, res) => {
+    userService.removeFavorite(req, res, (data) => {
+      return res.json(data)
+    })
+  },
 }
 
 module.exports = userController

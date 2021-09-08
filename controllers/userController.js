@@ -96,25 +96,14 @@ const userController = {
   },
   // 新增餐廳至最愛
   addFavorite: (req, res) => {
-    const UserId = helpers.getUser(req).id
-    const RestaurantId = req.params.restaurantId
-    Favorite.create({
-      UserId,
-      RestaurantId
-    }).then((favorite) => {
+    userService.addFavorite(req, res, (data) => {
       return res.redirect('back')
     })
   },
   // 移除最愛
   removeFavorite: (req, res) => {
-    const UserId = helpers.getUser(req).id
-    const RestaurantId = req.params.restaurantId
-    Favorite.findOne({
-      where: { UserId, RestaurantId }
-    }).then((favorite) => {
-      favorite.destroy()
-    }).then((restaurant) => {
-      res.redirect('back')
+    userService.removeFavorite(req, res, (data) => {
+      return res.redirect('back')
     })
   },
   // 喜歡餐廳

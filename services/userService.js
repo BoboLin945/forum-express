@@ -74,7 +74,7 @@ const userService = {
     const id = req.params.id
 
     if (Number(id) !== helpers.getUser(req).id) {
-      return callback({ status: 'error', message: "cannot edit other user's profile"})
+      return callback({ status: 'error', message: "cannot edit other user's profile" })
     }
 
     if (!name) {
@@ -106,6 +106,29 @@ const userService = {
           })
         })
     }
+  },
+  // 新增餐廳至最愛
+  addFavorite: (req, res, callback) => {
+    const UserId = helpers.getUser(req).id
+    const RestaurantId = req.params.restaurantId
+    Favorite.create({
+      UserId,
+      RestaurantId
+    }).then((favorite) => {
+      return callback({ status: 'success', message: '' })
+    })
+  },
+  // 移除最愛
+  removeFavorite: (req, res, callback) => {
+    const UserId = helpers.getUser(req).id
+    const RestaurantId = req.params.restaurantId
+    Favorite.findOne({
+      where: { UserId, RestaurantId }
+    }).then((favorite) => {
+      favorite.destroy()
+    }).then((restaurant) => {
+      return callback({ status: 'success', message: '' })
+    })
   },
 }
 
