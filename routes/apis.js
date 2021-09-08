@@ -24,6 +24,11 @@ const authenticateAdmin = (req, res, next) => {
 
 // 首頁
 router.get('/', authenticated, (req, res) => res.redirect('/api/restaurants'))
+// 美食達人
+router.get('/users/top', authenticated, userController.getTopUser)
+// following 功能
+router.post('/following/:userId', authenticated, userController.addFollowing)
+router.delete('/following/:userId', authenticated, userController.removeFollowing)
 // 查看 User Profile
 router.get('/users/:id', authenticated, userController.getUser)
 // Edit User Profile

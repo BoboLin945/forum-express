@@ -120,42 +120,20 @@ const userController = {
   },
   // 美食達人頁面
   getTopUser: (req, res) => {
-    return User.findAll({
-      include: [
-        { model: User, as: 'Followers' }
-      ]
-    }).then((users) => {
-      users = users.map(user => ({
-        ...user.dataValues,
-        // count follower number
-        FollowerCount: user.Followers.length,
-        // login user is follow the user or not
-        isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
-      }))
-      users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-      return res.render('topUser', { users })
+    userService.getTopUser(req, res, (data) => {
+      return res.render('topUser', data)
     })
   },
   // follow user
   addFollowing: (req, res) => {
-    const followerId = helpers.getUser(req).id
-    const followingId = req.params.userId
-    Followship.create({
-      followerId, followingId
-    }).then(((followship) => {
-      res.redirect('back')
-    }))
+    userService.addFollowing(req, res, (data) => {
+      return res.redirect('back')
+    })
   },
   // remove follow user
   removeFollowing: (req, res) => {
-    const followerId = helpers.getUser(req).id
-    const followingId = req.params.userId
-    Followship.findOne({
-      where: { followerId, followingId }
-    }).then((followship) => {
-      followship.destroy()
-    }).then((followship) => {
-      res.redirect('back')
+    userService.removeFollowing(req, res, (data) => {
+      return res.redirect('back')
     })
   }
 }

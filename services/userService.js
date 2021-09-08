@@ -152,6 +152,46 @@ const userService = {
       return callback({ status: 'success', message: '' })
     }).catch(err => console.log(err))
   },
+  // 美食達人頁面
+  getTopUser: (req, res, callback) => {
+    return User.findAll({
+      include: [
+        { model: User, as: 'Followers' }
+      ]
+    }).then((users) => {
+      users = users.map(user => ({
+        ...user.dataValues,
+        // count follower number
+        FollowerCount: user.Followers.length,
+        // login user is follow the user or not
+        isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
+      }))
+      users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+      return callback({ users })
+    })
+  },
+  // follow user
+  addFollowing: (req, res, callback) => {
+    const followerId = helpers.getUser(req).id
+    const followingId = req.params.userId
+    Followship.create({
+      followerId, followingId
+    }).then(((followship) => {
+      return callback({ status: 'success', message: '' })
+    }))
+  },
+  // remove follow user
+  removeFollowing: (req, res, callback) => {
+    const followerId = helpers.getUser(req).id
+    const followingId = req.params.userId
+    Followship.findOne({
+      where: { followerId, followingId }
+    }).then((followship) => {
+      followship.destroy()
+    }).then((followship) => {
+      return callback({ status: 'success', message: '' })
+    })
+  }
 }
 
 module.exports = userService

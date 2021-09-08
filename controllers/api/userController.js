@@ -101,6 +101,24 @@ const userController = {
       return res.json(data)
     })
   },
+  // 美食達人頁面
+  getTopUser: (req, res) => {
+    userService.getTopUser(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+  // follow user
+  addFollowing: (req, res) => {
+    userService.addFollowing(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+  // remove follow user
+  removeFollowing: (req, res) => {
+    userService.removeFollowing(req, res, (data) => {
+      return res.json(data)
+    })
+  }
 }
 
 module.exports = userController
